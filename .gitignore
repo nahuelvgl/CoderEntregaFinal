@@ -1,0 +1,17 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/UserSettings
+/Tester.sln
+/Temp
+/ProjectSettings
+/Packages
+/obj
+/Logs
+/Library
+/Assets
+/Assembly-CSharp.csproj
+/Assembly-CSharp-Editor.csproj
+/.vsconfig
+/.vs
