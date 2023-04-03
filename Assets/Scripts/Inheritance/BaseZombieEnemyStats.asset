@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0091334bb1630d1479e0fbba19ad9a20, type: 3}
+  m_Name: BaseZombieEnemyStats
+  m_EditorClassIdentifier: 
+  fastActionTime: 1
+  fastTimer: 1.5
+  fastDamage: 10
+  regularActionTime: 1
+  regularTimer: 2
+  regularDamage: 25
+  heavyActionTime: 2.3550973
+  heavyTimer: 2.5
+  heavyDamage: 50
