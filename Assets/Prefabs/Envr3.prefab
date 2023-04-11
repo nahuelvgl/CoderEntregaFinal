@@ -45,7 +45,7 @@ ReflectionProbe:
   m_Mode: 0
   m_RefreshMode: 0
   m_TimeSlicingMode: 0
-  m_Resolution: 64
+  m_Resolution: 512
   m_UpdateFrequency: 0
   m_BoxSize: {x: 15.11, y: 7.44, z: 6.73}
   m_BoxOffset: {x: 0, y: 0, z: 0}
@@ -76,7 +76,6 @@ GameObject:
   - component: {fileID: 1990661168060266873}
   - component: {fileID: 3182145827692144335}
   - component: {fileID: 8670726309424307983}
-  - component: {fileID: 8316614245286956564}
   m_Layer: 0
   m_Name: Plane.002 (1)
   m_TagString: Untagged
@@ -151,20 +150,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8316614245286956564
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392050042688335961}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6416302070336371891, guid: c75bca0e1c9971d49a4cf3b5446f4408, type: 3}
 --- !u!1 &423274970115818090
 GameObject:
   m_ObjectHideFlags: 0

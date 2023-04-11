@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.TextCore.Text;
 
 public class ZombieEvent : MonoBehaviour
 {
@@ -17,12 +20,27 @@ public class ZombieEvent : MonoBehaviour
     protected bool hasInvoked = false;
     public event Action OnAprroach;
     public event Action OnEnemyDeath;
-    [SerializeField] private float e_raycastDistance = 3f;
+    protected float damage;
+    [SerializeField] protected float timer;
+    [SerializeField] protected float actionTime;
+    [SerializeField] protected float e_raycastDistance;
     [SerializeField] private LayerMask m_layerToCollideWith;
+    [SerializeField] protected RobotCharacterController robotCharacterControllerScript;
+    [SerializeField] private Volume proximityPostProc;
+    private ChromaticAberration newIntensity;
+
+    protected virtual void Awake()
+    {
+        damage = BaseZombieEnemyStats.regularDamage;
+        timer = BaseZombieEnemyStats.regularTimer;
+        actionTime = BaseZombieEnemyStats.regularActionTime;
+    }
     public void Start()
     {
         GameObject character = GameObject.Find("RobotCharacter");
-        RobotCharacterController robotCharacterControllerScript = character.GetComponent<RobotCharacterController>();
+        robotCharacterControllerScript = character.GetComponent<RobotCharacterController>();
+        ResetTimer();
+        e_raycastDistance = 3f;
 
     }
     protected virtual void Update()
@@ -30,51 +48,48 @@ public class ZombieEvent : MonoBehaviour
         if (!isDefeated)
         {
             HitDistance();
-            LookAtCharacter();
             EnemyAttackRange();
+            LookAtCharacter();
+
         }
         else if (isDefeated && !hasInvoked)
         {
             EventHandler();
+            ProximityPostProcHandler();
         }
     }
     protected void OnTriggerStay(Collider other)
     {
-        RobotCharacterController character = other.GetComponent<RobotCharacterController>();
-        if (character != null)
+        RobotCharacterController character;
+        if (other.TryGetComponent(out character))
         {
             attackDistance = true;
-            AttackTimer();
             OnAprroach?.Invoke();
         }
     }
     protected void OnTriggerExit(Collider other)
     {
-        RobotCharacterController character = other.GetComponent<RobotCharacterController>();
-        if (character != null)
+        RobotCharacterController character;
+        if (other.TryGetComponent(out character))
         {
             attackDistance = false;
         }
     }
     protected virtual void HitDistance()
     {
-        GameObject character = GameObject.Find("RobotCharacter");
-        RobotCharacterController robotCharacterControllerScript = character.GetComponent<RobotCharacterController>();
-        if (attackDistance && Input.GetKey(KeyCode.K) && robotCharacterControllerScript.stamina >= robotCharacterControllerScript.attackStaminaCosts[1])
+        if (attackDistance && Input.GetKey(KeyCode.K) && robotCharacterControllerScript.stamina >= robotCharacterControllerScript.attackStaminaCosts[1] && robotCharacterControllerScript.health > 0)
         {
             isDefeated = true;
-            zombyEnemyAnimationController.SetTrigger("Death");
+            zombyEnemyAnimationController.SetTrigger("Death");  
         }
     }
 
-    protected virtual void AttackTimer()
+    protected void AttackTimer()
     {
         if (!isDefeated)
         {
-            BaseZombieEnemyStats.regularActionTime -= Time.deltaTime;
-            GameObject character = GameObject.Find("RobotCharacter");
-            RobotCharacterController robotCharacterControllerScript = character.GetComponent<RobotCharacterController>();
-            if (BaseZombieEnemyStats.regularActionTime <= 0 && robotCharacterControllerScript.health>0)
+            actionTime -= Time.deltaTime;
+            if (actionTime <= 0 && robotCharacterControllerScript.health>0)
             {
                 zombyEnemyAnimationController.SetTrigger("Attack");
                 ResetTimer();
@@ -82,15 +97,15 @@ public class ZombieEvent : MonoBehaviour
             }
         }
     }
-    private void ResetTimer()
+    protected  void ResetTimer()
     {
-        BaseZombieEnemyStats.regularActionTime = BaseZombieEnemyStats.regularTimer;
+        actionTime = timer;
     }
-    protected virtual void ZombieAttack(RobotCharacterController character)
+    protected void ZombieAttack(RobotCharacterController character)
     {
         if (attackDistance) 
         { 
-        character.health -= BaseZombieEnemyStats.regularDamage;
+        character.health -= damage;
         character.UpdateHealthBar();
         Instantiate(hitEffect, hitEffectSpawn.position, hitEffectSpawn.rotation);
         }
@@ -98,7 +113,8 @@ public class ZombieEvent : MonoBehaviour
     protected void LookAtCharacter()
     {
         var vectorToCharacter = characterPosition.position - transform.position;
-        var newRotation = Quaternion.LookRotation(vectorToCharacter);
+        vectorToCharacter.y = 0f;
+        var newRotation = Quaternion.FromToRotation(Vector3.forward, vectorToCharacter);
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * rotationVelocity);
     }
     protected void EnemyAttackRange()
@@ -106,21 +122,28 @@ public class ZombieEvent : MonoBehaviour
         var l_hasCollided =
             Physics.Raycast(transform.position, transform.forward, out RaycastHit p_raycastHitInfo, e_raycastDistance,
                 m_layerToCollideWith);
+        Debug.DrawRay(transform.position, transform.forward * e_raycastDistance, Color.green);
 
         if (l_hasCollided)
         {
-            var character = p_raycastHitInfo.collider.GetComponent<RobotCharacterController>();
-            if (character != null)
+            if (p_raycastHitInfo.collider.TryGetComponent(out RobotCharacterController character))
             {
                 AttackTimer();
             }
-
         }
     }
+
     protected void EventHandler()
     {
         OnEnemyDeath?.Invoke();
-        hasInvoked = true;
+        hasInvoked = true;       
     }
+    protected void ProximityPostProcHandler()
+    {
+        var l_profile = proximityPostProc.profile;
+        l_profile.TryGet<ChromaticAberration>(out newIntensity);
+        newIntensity.intensity.Override(0f);  
+    }
+
 
 }

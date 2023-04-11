@@ -8,54 +8,24 @@ public class HeavyChaseZombie : ZombieEvent
     [SerializeField] float offsetDistance = 0.5f;
     [SerializeField] float speed = 0.5f;
     private bool enemyMovement;
+    protected override void Awake()
+    {
+        damage = BaseZombieEnemyStats.heavyDamage;
+        timer = BaseZombieEnemyStats.heavyTimer;
+        actionTime = BaseZombieEnemyStats.heavyActionTime;
+    }
     protected override void Update()
     {
+        base.Update();
         if (!isDefeated)
         {
-            HitDistance();
-            LookAtCharacter();
-            EnemyAttackRange();
             ChaseEnemyBehaviour();
             EnemyMovement();
-        }
-        else if (isDefeated && !hasInvoked)
-        {
-            EventHandler();
-        }
-    }
-    protected override void ZombieAttack(RobotCharacterController character)
-    {
-        if (attackDistance)
-        {
-            character.health -= BaseZombieEnemyStats.heavyDamage;
-            character.UpdateHealthBar();
-            Instantiate(hitEffect, hitEffectSpawn.position, hitEffectSpawn.rotation);
-        }
-    }
-    protected virtual void ResetTimer()
-    {
-        BaseZombieEnemyStats.heavyActionTime = BaseZombieEnemyStats.heavyTimer;
-    }
-    protected override void AttackTimer()
-    {
-        if (!isDefeated)
-        {
-            GameObject character = GameObject.Find("RobotCharacter");
-            RobotCharacterController robotCharacterControllerScript = character.GetComponent<RobotCharacterController>();
-            BaseZombieEnemyStats.heavyActionTime -= Time.deltaTime;
-            if (BaseZombieEnemyStats.heavyActionTime <= 0 && robotCharacterControllerScript.health>0)
-            {   
-                ZombieAttack(robotCharacterControllerScript);
-                zombyEnemyAnimationController.SetTrigger("Attack");
-                ResetTimer();
-            }
         }
     }
     protected override void HitDistance()
     {
-        GameObject character = GameObject.Find("RobotCharacter");
-        RobotCharacterController robotCharacterControllerScript = character.GetComponent<RobotCharacterController>();
-        if (attackDistance && Input.GetKey(KeyCode.L) && robotCharacterControllerScript.stamina >= robotCharacterControllerScript.attackStaminaCosts[2])
+        if (attackDistance && Input.GetKey(KeyCode.L) && robotCharacterControllerScript.stamina >= robotCharacterControllerScript.attackStaminaCosts[2] && robotCharacterControllerScript.health > 0)
         {
             isDefeated = true;
             zombyEnemyAnimationController.SetTrigger("Death");

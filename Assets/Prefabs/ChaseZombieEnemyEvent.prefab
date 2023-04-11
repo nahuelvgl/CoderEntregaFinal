@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 2242599113247033166}
   m_Layer: 0
   m_Name: ChaseZombieEnemyEvent
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -308,7 +308,7 @@ Transform:
   m_GameObject: {fileID: 537965394455525098}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -15.23, y: 6.1, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 1.2000003, y: 1.2, z: 1.2000003}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3630871881414590849}
@@ -318,6 +318,7 @@ Transform:
   - {fileID: 3718347030593385988}
   - {fileID: 2777894128542588422}
   - {fileID: 6095019426713553157}
+  - {fileID: 7850161421808940560}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
@@ -405,11 +406,15 @@ MonoBehaviour:
   characterPosition: {fileID: 0}
   zombyEnemyAnimationController: {fileID: 6935853694328885503}
   isDefeated: 0
+  timer: 0
+  actionTime: 0
   e_raycastDistance: 1.5
   m_layerToCollideWith:
     serializedVersion: 2
     m_Bits: 1
-  persuitDistance: 100
+  robotCharacterControllerScript: {fileID: 0}
+  proximityPostProc: {fileID: 315986076913926849}
+  persuitDistance: 5
   offsetDistance: 0.5
   speed: 1.5
 --- !u!1 &696218490585811453
@@ -1106,6 +1111,69 @@ Transform:
   m_Father: {fileID: 3126176015461329505}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3725288534548703067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7850161421808940560}
+  - component: {fileID: 315986076913926849}
+  - component: {fileID: 5475189486531067277}
+  m_Layer: 7
+  m_Name: ProximityPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7850161421808940560
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3725288534548703067}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1.1426666, z: 0}
+  m_LocalScale: {x: 0.8333331, y: 0.83333325, z: 0.8333331}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 881839118635052112}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &315986076913926849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3725288534548703067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 0
+  priority: 1
+  blendDistance: 0.2
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 8961615ddd9b7d74f8f1a005d3119690, type: 2}
+--- !u!65 &5475189486531067277
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3725288534548703067}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7400029, y: 1.4742855, z: 1.7200029}
+  m_Center: {x: -0.1048422, y: -0.5562121, z: 0.013670029}
 --- !u!1 &3789748692027151462
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,14 +18,10 @@ public class PurpleZombieEvent : ZombieEvent
 
     protected override void Update()
     {
+        base.Update();
         if (!isDefeated)
         {
             SetCurrentState();
-            LookAtCharacter();
-        }
-        else if (isDefeated && !hasInvoked)
-        {
-            EventHandler();
         }
     }
 

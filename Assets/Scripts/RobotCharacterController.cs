@@ -18,15 +18,13 @@ public class RobotCharacterController : MonoBehaviour
     [SerializeField] private HealthBar healthBar;
     [SerializeField] private StaminaBar staminaBar;
     [SerializeField] private Animator robotCharacterAnimationController;
-    [SerializeField] private ZombieEvent zombie;
+
     [SerializeField] private Volume g_volume;
     private ColorAdjustments newHueValue;
     bool characterMovement;
     bool rotation;
     public UnityEvent OnHealthChanged;
     public UnityEvent OnStaminaChanged;
-    public UnityEvent OnSuperAttack;
-    public event Action OnDeath;
     private bool hasLoggedWarning = false;
     private bool isDead = false;
     public int[] attackStaminaCosts;
@@ -48,15 +46,12 @@ public class RobotCharacterController : MonoBehaviour
         speed = 2f;
         health = maxHealth;
         stamina = maxStamina;
-        GameObject zombie = GameObject.Find("ZombieEnemyEvent");
         attackStaminaCosts = new int[3];
         attackStaminaCosts[0] = 25; // J Attack
         attackStaminaCosts[1] = 50; // K Attack
         attackStaminaCosts[2] = 75; // L Attack
 
     }
-
-    // Update is called once per frame
     void Update()
     {
         var horizontal = Input.GetAxis("Horizontal");
@@ -71,15 +66,13 @@ public class RobotCharacterController : MonoBehaviour
             Move(direction);
         }
         CharacterMovement();
+        StaminaTimerStart();
+        StaminaRegen();
         JAttack();
         KAttack();
         LAttack();
         Death();
-        RecieveDamage();
-        OnsuperAttack();
-        RedTint();
-        StaminaRegen();
-        StaminaTimerStart();
+        RedTint(); 
     }
     private void Move(Vector3 moveDirection)
     {
@@ -94,17 +87,6 @@ public class RobotCharacterController : MonoBehaviour
         {
             characterMovement = false;
             rotation = false;
-        }
-    }
-    public void RecieveDamage()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-
-            health -= 50;
-            UpdateHealthBar();
-
-
         }
     }
     private void CharacterMovement()
@@ -191,7 +173,6 @@ public class RobotCharacterController : MonoBehaviour
         if (health <= 0 && !isDead)
         {
             robotCharacterAnimationController.SetTrigger("Death");
-            OnDeath?.Invoke();
             isDead = true;
         }
     }
@@ -212,18 +193,10 @@ public class RobotCharacterController : MonoBehaviour
         hasLoggedWarning = true;
         }
     }
-    public void OnsuperAttack()
-    {
-        if (Input.GetKey(KeyCode.X))
-        {
-            Debug.Log("Super Attack");
-            zombie.zombyEnemyAnimationController.SetTrigger("Death");
-            zombie.isDefeated = true;
-        }
-    }
     private void RedTint()
     {
-        if (health <= 25f) { 
+        if (health <= 25f)
+        { 
         var g_profile = g_volume.profile;
         g_profile.TryGet<ColorAdjustments>(out newHueValue);
         newHueValue.hueShift.Override(-35f);
@@ -231,7 +204,7 @@ public class RobotCharacterController : MonoBehaviour
     }
     private void StaminaRegen()
     {
-        if(staminaRegenTimer <= 0 &&stamina >= 0 && stamina != maxStamina)
+        if(staminaRegenTimer <= 0 && stamina != maxStamina)
         {
             stamina = 100;
             staminaBar.UpdateStaminaBar(stamina);
@@ -251,8 +224,7 @@ public class RobotCharacterController : MonoBehaviour
     }
     protected void OnTriggerStay(Collider other)
     {
-        ZombieEvent zombieEvent = other.GetComponentInChildren<ZombieEvent>();
-        if (zombieEvent != null)
+        if (other.gameObject.tag == "Enemy")
         {
             attackDistance = true;
             if (warningCooldownTimer <= 0.0f)
@@ -268,8 +240,7 @@ public class RobotCharacterController : MonoBehaviour
     }
     protected void OnTriggerExit(Collider other)
     {
-        ZombieEvent zombieEvent = other.GetComponentInChildren<ZombieEvent>();
-        if (zombieEvent != null)
+        if (other.gameObject.tag == "Enemy")
         {
             attackDistance = false;
         }

@@ -12,9 +12,9 @@ public class AttackText : MonoBehaviour
     }
     private void SelfDestruct()
     {
-        if(destructionTimer <= 0 )
+        if (destructionTimer <= 0)
         {
-            Destroy(gameObject);    
+            Destroy(gameObject);
         }
     }
 }

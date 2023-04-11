@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 7510108109587189955}
   m_Layer: 0
   m_Name: RobotCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,7 +243,7 @@ Transform:
   m_GameObject: {fileID: 1097835246218940249}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.16354099, y: 6.3926363, z: 0}
-  m_LocalScale: {x: 4.82, y: 4.82, z: 4.82}
+  m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3153654649243049417}
@@ -286,7 +286,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 2.627344
-  m_Height: 14.714373
+  m_Height: 25.11
   m_Direction: 1
   m_Center: {x: -0.03917292, y: 7.071805, z: 1.8661989e-17}
 --- !u!54 &9167521738719460971
@@ -303,7 +303,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 14
+  m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!136 &5692158227359256212
 CapsuleCollider:
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1097835246218940249}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12bb26191f79214408ece5becbcf4dcd, type: 3}
   m_Name: 
@@ -339,7 +339,6 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   staminaBar: {fileID: 0}
   robotCharacterAnimationController: {fileID: 5951426845605171097}
-  zombie: {fileID: 0}
   g_volume: {fileID: 0}
   OnHealthChanged:
     m_PersistentCalls:
@@ -370,21 +369,6 @@ MonoBehaviour:
           m_FloatArgument: 100
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-  OnSuperAttack:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
   attackStaminaCosts: 
   hitEffect: {fileID: 1774958749467165551, guid: 514ccbbcf2bb7d549a8da9130734aa10,

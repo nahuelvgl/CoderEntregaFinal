@@ -10,17 +10,11 @@ public class RegularChaseZombie : ZombieEvent
     private bool enemyMovement;
     protected override void Update()
     {
+        base.Update();
         if (!isDefeated)
         {
-            HitDistance();
-            LookAtCharacter();
-            EnemyAttackRange();
             ChaseEnemyBehaviour();
             EnemyMovement();
-        }
-        else if (isDefeated && !hasInvoked)
-        {
-            EventHandler();
         }
     }
     private void ChaseEnemyBehaviour()
