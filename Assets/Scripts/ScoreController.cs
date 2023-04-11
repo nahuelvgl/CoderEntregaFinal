@@ -25,13 +25,13 @@ public class ScoreController : MonoBehaviour
     private void Start()
     {
         highScoreText.text = "Score: " + 0;
-        ZombieEvent[] enemies = FindObjectsOfType<ZombieEvent>();
-        foreach (ZombieEvent enemy in enemies)
+        l_enemies = new List<ZombieEvent>(FindObjectsOfType<ZombieEvent>());
+        foreach (ZombieEvent enemy in l_enemies)
         {
             enemy.OnEnemyDeath += () => AddScore(enemy);
-            l_enemies.Add(enemy);
             UpdateEnemyCountText();
         }
+
     }
     private void AddScore(ZombieEvent enemy)
     {
